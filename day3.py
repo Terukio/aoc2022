@@ -27,22 +27,10 @@ def create_groups(data):
     return groups
 
 def group_shared_item(group):
-    possibilities = []
-    for elf in group:
-        if group.index(elf) == 0:
-            for letter in elf:
-                if letter not in possibilities:
-                    possibilities.append(letter)
-        elif group.index(elf) == 1:
-            new_possibilities = []
-            for letter in elf:
-                if letter in possibilities:
-                    if letter not in new_possibilities:
-                        new_possibilities.append(letter)
-        else:
-            for letter in elf:
-                if letter in new_possibilities:
-                    return(letter)
+    elf1,elf2,elf3 = group
+    elf1,elf2,elf3 = set(elf1),set(elf2),set(elf3)
+    overlapping_items = ''.join(elf1.intersection(elf2).intersection(elf3))
+    return overlapping_items
 
 def part1(data):
     shared_items = ''
