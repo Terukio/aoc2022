@@ -53,7 +53,7 @@ def part2(data):
         
             
 def main():
-    response = int(input('Type 1 for example, 2 for actual.'))
+    response = int(input('Type 1 for example, 2 for actual: '))
     if response == 1:
         with open(r'day3ex.txt') as f:
             data = f.read()
