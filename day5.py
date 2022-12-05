@@ -8,7 +8,7 @@ def part1(structure,instructions):
             structure[newLocation - 1].append(structure[currentLocation - 1][-1])
             structure[currentLocation - 1] = structure[currentLocation - 1][:-1]
     for stack in structure:
-        print(stack[-1],end='')
+        print(stack[-1].strip('[]'),end='')
     print()
     
 def part2(structure,instructions):
@@ -19,7 +19,7 @@ def part2(structure,instructions):
         for _ in range(items):
             structure[currentLocation - 1] = structure[currentLocation - 1][:-1]
     for stack in structure:
-        print(stack[-1],end='')
+        print(stack[-1].strip('[]'),end='')
     print()
     
 def main():
@@ -45,10 +45,9 @@ def main():
     stacks = []
 
     for i in range(number_of_stacks):
-        stacks.append([structure[i + (j * 3)] for j in range(number_of_stacks)][::-1])
+        stacks.append([structure[i + (j * number_of_stacks)] for j in range(number_of_stacks - 1)][::-1])
         while stacks[i][-1] == '   ':
             del stacks[i][-1]
-    print(stacks)
 
     stacks2 = copy.deepcopy(stacks)
 
