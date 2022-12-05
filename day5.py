@@ -26,33 +26,48 @@ def main():
     response = int(input('1 for example, 2 for actual: '))
     if response == 1:
         file = r'day5ex.txt'
-        stack1 = ['Z','N']
-        stack2 = ['M','C','D']
-        stack3 = ['P']
-        structure = [stack1,stack2,stack3]
-        structure2 = copy.deepcopy(structure)
     else:
         file = r'day5data.txt'
-        stack1 = ['F','T','C','L','R','P','G','Q']
-        stack2 = ['N','Q','H','W','R','F','S','J']
-        stack3 = ['F','B','H','W','P','M','Q']
-        stack4 = ['V','S','T','D','F']
-        stack5 = ['Q','L','D','W','V','F','Z']
-        stack6 = ['Z','C','L','S']
-        stack7 = ['Z','B','M','V','D','F']
-        stack8 = ['T','J','B']
-        stack9 = ['Q','N','B','G','L','S','P','H']
-        structure = [stack1,stack2,stack3,stack4,stack5,stack6,stack7,stack8,stack9]
-        structure2 = copy.deepcopy(structure)
 
     with open(file) as f:
         data = f.read()
     data = data.split('\n\n')
-    _,instructions = data
+    structure,instructions = data
+
     instructionRegex = re.compile(r'move (\d+) from (\d+) to (\d+)')
     instructions = instructionRegex.findall(instructions)
+
+    structure = structure.split('\n')
     
-    part1(structure,instructions)
-    part2(structure2,instructions)
+    newStructure = []
+    for j in range(len(structure)):
+        items = []
+        for i in range(len(structure[j])):
+            if (i + 1) % 4 == 0:
+                continue
+            elif structure[j][i] == '[':
+                continue
+            elif structure[j][i] == ']':
+                continue
+            elif structure[j][i] != ' ':
+                items.append(structure[j][i])
+            elif (i + 1) % 2 == 0:
+                items.append(' ')
+        newStructure.append(items)
+
+    stacks = [[] for _ in range(len(newStructure[-1]))]
+
+    for info in newStructure[::-1]:
+        for i in range(len(info)):
+            if info[i] != ' ':
+                stacks[i].append(info[i])
+
+    for i in range(len(stacks)):
+        del stacks[i][0]
+
+    stacks2 = copy.deepcopy(stacks)
+
+    part1(stacks,instructions)
+    part2(stacks2,instructions)
 
 main()
