@@ -42,28 +42,34 @@ def part1(data):
                     currentDirectory = ['/']
                 else:
                     currentDirectory.append(cd(line))
-            if commandType(line) == 'ls':
-                j = copy.copy(index) 
-                try:
-                    while lineType(data[j + 1]) != 'command':
-                        if lineType(data[j + 1]) == 'directory':
-                            print('hi')
-                        else:
-                            directories.setdefault(currentDirectory[-1],0)
-                            for i in range(len(currentDirectory)):
-                                directories[currentDirectory[i]] += fileSize(data[j + 1])
-                        j += 1
-                except:
-                    pass
+        elif lineType(line) == 'directory':
+            cur = copy.copy(currentDirectory)
+            cur.append(line[4:])
+            directoryName = '_'.join(cur)
+            if directoryName not in directories.keys():
+                directories.setdefault(directoryName,0)
+        else:
+            size = fileSize(line)
+            for i in range(len(currentDirectory)):
+                directories['_'.join(currentDirectory[:i+1])] += size
 
     sum = 0
     for size in directories.values():
         if size <= 100_000:
             sum += size
-    print(sum)
-    print(directories)
-    print(currentDirectory)
 
+    return sum,directories
+
+def part2(directories):
+    used_space = directories['/']
+    total_space = 70_000_000
+    needed_space = 30_000_000
+    empty_space = total_space - used_space
+    possibilities = []
+    for directory,size in directories.items():
+        if empty_space + size >= needed_space:
+            possibilities.append(size)
+    print(min(possibilities))
 
 
 def main():
@@ -75,7 +81,9 @@ def main():
     with open(file) as f:
         data = f.read().split('\n')
 
-    part1(data)
+    print(part1(data)[0])
+    part2(part1(data)[1])
+ 
 
 if __name__ == "__main__":
     main()
