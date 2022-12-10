@@ -18,7 +18,7 @@ class Rope:
             else:
                 head.x += 1
             for parent,knot in enumerate(self.knots[1:]):
-                if not knot.adjacent(self.knots[parent]):
+                while not knot.adjacent(self.knots[parent]):
                     knot.move(self.knots[parent])
             self.visited_locations.add((self.knots[-1].x,self.knots[-1].y))
 
@@ -34,19 +34,30 @@ class Knot:
             return True
     
     def move(self,parent):
+        if parent.x - self.x == 2 and parent.y - self.y == 2:
+            self.x += 1
+            self.y += 1
+        elif parent.x - self.x == 2 and parent.y - self.y == -2:
+            self.x += 1
+            self.y -= 1
+        elif parent.x - self.x == -2 and parent.y - self.y == 2:
+            self.x -= 1
+            self.y += 1
+        elif parent.x - self.x == -2 and parent.y - self.y == -2:
+            self.x -= 1
+            self.y -= 1
         if parent.x - self.x > 1:
             self.x += 1
             self.y = parent.y
-        if parent.x - self.x < -1:
+        elif parent.x - self.x < -1:
             self.x -= 1
             self.y = parent.y
         if parent.y - self.y > 1:
             self.y += 1
             self.x = parent.x
-        if parent.y - self.y < -1:
+        elif parent.y - self.y < -1:
             self.y -= 1
             self.x = parent.x
-
 
 def part1(data):
     rope = Rope(2)
